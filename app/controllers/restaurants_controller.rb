@@ -13,8 +13,12 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    Restaurant.create!(restaurant_params)
-    redirect_to restaurant_path(@new_restaurant)
+    @restaurant = Restaurant.new(restaurant_params)
+    if @restaurant.save
+      redirect_to restaurant_path(@restaurant)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private

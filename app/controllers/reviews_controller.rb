@@ -6,11 +6,14 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    @new_review = Review.new(review_params)
-    @new_review.restaurant = @restaurant
-    @new_review.save!
-    @restaurant.reviews << @new_review
-    redirect_to restaurant_path(@restaurant)
+    @review = Review.new(review_params)
+    @review.restaurant = @restaurant
+    if @review.save
+      @restaurant.reviews << @review
+      redirect_to restaurant_path(@restaurant)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
